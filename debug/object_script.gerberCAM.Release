@@ -1,0 +1,17 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\gerber.o
+./release\drawPCB.o
+./release\toolpath.o
+./release\preprocess.o
+./release\clipper.o
+./release\treeitem.o
+./release\treemodel.o
+./release\settingwindow.o
+./release\setting.o
+./release\qrc_resources.o
+./release\moc_mainwindow.o
+./release\moc_treemodel.o
+./release\moc_settingwindow.o
+);

@@ -1,0 +1,17 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\gerber.o
+./debug\drawPCB.o
+./debug\toolpath.o
+./debug\preprocess.o
+./debug\clipper.o
+./debug\treeitem.o
+./debug\treemodel.o
+./debug\settingwindow.o
+./debug\setting.o
+./debug\qrc_resources.o
+./debug\moc_mainwindow.o
+./debug\moc_treemodel.o
+./debug\moc_settingwindow.o
+);
