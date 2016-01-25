@@ -109,8 +109,27 @@ gerber::gerber(QString &fileName)
 
     bool readFileFlag=false;
     int debugcount=0;
+
+    /*
+     * Start interpreting the gerber file.The process is done in two steps:
+     *
+     * 1.Read the raw ASCII gerber data,check if there's any error,and put
+     * data in different places.E.g.,Extract the aperture definition and put
+     * them in Hash tables.This is what process_line() do.
+     *
+     * 2.Interpret each line and put them in more complex data structures.
+     * E.g.,extract pads and tracks information from the lines.This is what
+     * transform_data() do.
+     * */
     while (!file.atEnd()) {
         debugcount++;
+
+        /*
+         * All the data are interpreted line by line.If there's any error,
+         * it returns false and ends the process.
+         *
+         * Step 1.Raw process.
+         * */
         QByteArray line = file.readLine();
         readFileFlag=process_line(line);
         if(readFileFlag==false)
@@ -121,7 +140,7 @@ gerber::gerber(QString &fileName)
     totalLine=debugcount;
 
     /*
-     * Try to read the gerber file.
+     * Step 2.Further interpretation.
      * */
     if(readFileFlag==true)
     {
@@ -155,7 +174,18 @@ gerber::gerber(QString &fileName)
 }
 
 /*
- * Interpret the
+ * Interpret the aperture macro raw data into a pad.
+ *
+ * APERTURE MACRO: A mass parameter that describes the geometry of a special
+ * aperture and assigns it to a D code.
+ *
+ * Some examples:
+ * An AM is usually a complex shap,e.g.,a round pad with a rectangle inside,
+ * or an Obround shap,which could be treated as a short track with round endings.
+ * Currently only rectangle or Obround pad are implemented as these are the most
+ * common ones.
+ *
+ * A good test case for AM is 'design1.gtl'
  * */
 void gerber::macroToPad(int AMNum,QString AMName)
 {
@@ -172,6 +202,10 @@ void gerber::macroToPad(int AMNum,QString AMName)
             p2.setX(ADHash.value(AMName+'n'+QString::number(AMNum)+'p'+QString::number(2)));
             p2.setY(ADHash.value(AMName+'n'+QString::number(AMNum)+'p'+QString::number(3)));
 
+            /*
+             * Like any other simple ADs,an AM is described by width(distance1),length(distance2)
+             * and angle.
+             * */
             double distance1=qSqrt((p1.x()-p2.x())*(p1.x()-p2.x())+(p1.y()-p2.y())*(p1.y()-p2.y()));
             double angle=atan((p2.y()-p1.y())/(p2.x()-p1.x()));
 
@@ -188,7 +222,7 @@ void gerber::macroToPad(int AMNum,QString AMName)
         }
         else if(parameterNum==8)//Octagon
         {
-
+            //todo: update this in the future
         }
     }
     else if(AMNum==3)//Obround,1rectangle+2circle
@@ -201,7 +235,10 @@ void gerber::macroToPad(int AMNum,QString AMName)
         c2.setY(ADHash.value(AMName+'n'+QString::number(3)+'p'+QString::number(2)));
         double r=ADHash.value(AMName+'n'+QString::number(3)+'p'+QString::number(0));
 
-
+        /*
+         * Like any other simple ADs,an AM is described by width(distance1),length(distance2)
+         * and angle.
+         * */
         double angle=atan((c2.y()-c1.y())/(c2.x()-c1.x()));
         double distance=qSqrt((c2.x()-c1.x())*(c2.x()-c1.x())+(c2.y()-c1.y())*(c2.y()-c1.y()));
 
@@ -211,18 +248,26 @@ void gerber::macroToPad(int AMNum,QString AMName)
         ADHash.insert(AMName+QString::number(1),r);
         ADHash.insert(AMName+" Angle",angle);
     }
-
-
 }
 
-
+// 1.Read the raw ASCII gerber data,check if there's any error,and put
+// data in different places.E.g.,Extract the aperture definition and put
+// them in Hash tables.This is what process_line() do.
 bool gerber::process_line(QByteArray line)
 {
     static bool AMFlag=false;
     static int AMNum=0;
     static QString AMName;
+    //Emty line
     if(line=="\n")
         return true;
+
+    /*
+     * RS-274X parameters are delimited by a parameter delimiter, typically a percent
+     * (%) sign. Because parameters are also contained in a data block, they are also
+     * delimited by an end-of-block character. For example,
+     *    %FSLAX23Y23*%
+     * */
     else if(line.startsWith("%")||AMFlag==true)
     {
         if(!line.endsWith("%\n")&&!line.endsWith("*\n"))
@@ -232,6 +277,13 @@ bool gerber::process_line(QByteArray line)
         }
 
         //qDebug() << "parameters";
+        /*
+         *A line start with F is usually the first line of the file,e.g.,
+         *    %FSTAX23Y23*%
+         * This parameter is a Format Statement (FS) describing how the coordinate
+         * data in the file should be interpreted (in this case, 4.2 format for both
+         * X and Y coordinates).
+         * */
         if(line.at(1)=='F')
         {
             FormatStatement=line.at(3);
@@ -249,6 +301,27 @@ bool gerber::process_line(QByteArray line)
             //qDebug()<<debugString;
 
         }
+
+        /*
+         * Aperture parameters definition.Aperture format:
+         *    %ADD<D-code number><aperture type>,<modifier>[X<modifer>]*%
+         * where:
+         *  ADD                 - the AD parameter and D (for D-code)
+         *  <D-code number>     - the D-code number being defined (10 - 999)
+         *  <aperture type>     - the aperture descriptions.Standar types:
+         *                          C - Circle
+         *                          R - Rectangle or squre
+         *                          O - Obround(oval)
+         *                          P - Regular polygon
+         *
+         * <modifier>           - depends on aperture type,X to separate each modifier.
+         *
+         * examples:
+         * %ADD10C,.025*%               - D-code 10: 25 mil round
+         * %ADD22R,.050X.050X.027*% 	- D-code 22: 50 mil square with 27mil round hole
+         * %ADD57O,.030X.040X.015*% 	- D-code 57: obround 30x40 mil with 15 mil round hole
+         *
+         * */
         else if(line.startsWith("%AD"))
         {
             int parameterNum=line.count("X")+1;
@@ -274,7 +347,7 @@ bool gerber::process_line(QByteArray line)
 
             //qDebug()<<ADName+"="+QString::number(ADHash.value(ADName+" Num"));
 
-            //save every parameter
+            //Save every parameter
             int startofNum,endofNum;
             startofNum=line.indexOf(",")+1;
             j=line.indexOf(',')+1;
@@ -294,6 +367,9 @@ bool gerber::process_line(QByteArray line)
             }
 
         }
+        /*
+         * A good test case for AM is 'design1.gtl'
+         * */
         else if(line.startsWith("%AM")||AMFlag==true)
         {
 
@@ -447,9 +523,8 @@ qint64 gerber::convertNumber(QString line,QString c,qint32 integerDigit,qint32 d
 }
 
 /*
- * This function will calculate the border of the element.No matter what
- * kind of shape the element is,we will generate a rectanle border for it.
- * This will largely decrease the time to check collision in later process.
+ * This function finds the border of the PCB.Later on this border information will
+ * be used to automatically scale the PCB on screen.
  * */
 void gerber::find_border(struct boundingRect r)
 {
@@ -463,9 +538,9 @@ void gerber::find_border(struct boundingRect r)
         maxY=r.top;
 }
 
-
-
-
+/*
+ * Interpret the data alfter process_line() function.
+ * */
 bool gerber::transform_data()
 {
     int i,j;
@@ -475,13 +550,18 @@ bool gerber::transform_data()
     double currentX,currentY,lastX,lastY;
     int currentMode;//D01,D02,D03;
 
-    //find the first XY data
+    //Find the first XY data
     for(i=0;i<DataList.size();i++)
     {
         line=DataList.at(i);
         if(line.contains("X"))
             break;
     }
+
+    /*
+     * All the gerber data are point data,to draw a line we need to record previous
+     * point.
+     * */
     lastX=convertNumber(line,"X",XInteger,XDecimal);
     lastY=convertNumber(line,"Y",YInteger,YDecimal);
 
@@ -499,12 +579,20 @@ bool gerber::transform_data()
             qDebug()<<"G91 command is not supported";
             return false;
         }
+
+        /*
+         * Turn on Polygon Area Fill
+         * */
         if(line=="G36")
         {
             //qDebug()<<"G36 command is not supported";
             //return false;
             polygonFillMode=true;
         }
+
+        /*
+         * Turn off Polygon Area Fill
+         * */
         if(line=="G37")
         {
             //qDebug()<<"G36 command is not supported";
@@ -512,6 +600,10 @@ bool gerber::transform_data()
             polygonFillMode=false;
         }
 
+        /*
+         * Tool prepare.Usually precedes an aperture D-code.
+         * When this code appears,we need to change the aperture shape.
+         * */
         if(line.startsWith("G54"))
         {
             currentParameter=line.mid(3,line.size()-3);
@@ -526,6 +618,12 @@ bool gerber::transform_data()
             continue;
         }
 
+        /*
+         * D Codes definition:
+         * D01(D2)  - Draw line,exposure on.
+         * D02(D2)  - Exposure off.This is like G00 in GCode,which is rapid positioning.
+         * D03(D3)  - Flash aperture.Used for exposuring a pad.
+         * */
         if(line.endsWith("D01")) currentMode=1;
         else if(line.endsWith("D02")) currentMode=2;
         else if(line.endsWith("D03")) currentMode=3;
@@ -595,10 +693,7 @@ bool gerber::transform_data()
             padNum++;
 
             find_border(newPad.boundingRect);
-
         }
-
-
     }
 
     blockNum=block;
@@ -620,6 +715,11 @@ gerber::~gerber()
 
 }
 
+/*
+ * This function will calculate the border of the element.No matter what
+ * kind of shape the element is,it will generate a rectangle border for it.
+ * This will largely decrease the time to check collision in later process.
+ * */
 struct boundingRect gerber::boundingRect(struct pad pad)
 {
     struct boundingRect r;
@@ -690,6 +790,11 @@ struct boundingRect gerber::boundingRect(struct pad pad)
     return r;
 }
 
+/*
+ * This function will calculate the border of the element.No matter what
+ * kind of shape the element is,it will generate a rectangle border for it.
+ * This will largely decrease the time to check collision in later process.
+ * */
 struct boundingRect gerber::boundingRect(struct track t)
 {
     struct boundingRect r;
@@ -822,7 +927,18 @@ void gerber::inverseTrack(struct track &t)
     t.pointstart=p;
 }
 
-//simple net categorizing
+//
+/*
+ * Simple net categorizing.In PCB layout,net means a set of pads or tracks which are
+ * physically connected.E.g.,GND is a net and lots of tracks and componet pads are
+ * connected with GND.Block is the term I chose to describe a net,more precisely a
+ * part of a net.It means all the pads and tracks in this set are connected through
+ * certain points,like a chain,instead of 'collision'.E.g,an arc in gerber could be
+ * decribed as a chain of small straight segments,or a track may connects two pads
+ * toghter.These elements share joints so they can be easily recognized as a net.So
+ * there's no need to use collision detect algorithm to recognize them,which saves
+ * lots of time.
+ * */
 void gerber::blockCount()
 {
     int i,j;
@@ -844,6 +960,15 @@ void gerber::blockCount()
     blockNum=1;
     for(i=0;i<trackNum-1;i++)
     {
+        /*
+         * There are four possible ways of two tracks connecting together:
+         *  t1.end   & t2.start
+         *  t1.end   & t2.end
+         *  t1.start & t2.end
+         *  t1.start & t2.start
+         * All of these need to be checked.If two tracks connects,then assign
+         * the block number to the second track.Otherwise,creat a new block number.
+         * */
         if(tracksList.at(i).pointend==tracksList.at(i+1).pointend||
                 tracksList.at(i).pointend==tracksList.at(i+1).pointstart||
                     tracksList.at(i).pointstart==tracksList.at(i+1).pointend||
@@ -871,6 +996,9 @@ void gerber::blockCount()
         sameBlock=false;
         for(j=0;j<trackNum;j++)
         {
+            /*
+             * Check the connection of a track and a pad.
+             * */
             if(padsList.at(i).point==tracksList.at(j).pointend||
                     padsList.at(i).point==tracksList.at(j).pointstart)
             {

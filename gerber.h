@@ -38,6 +38,9 @@ SOFTWARE.
 
 using namespace ClipperLib;
 
+/*
+ * A rectangle boder of a element,for quick collision check.
+ * */
 struct boundingRect
 {
     qint64 top;
@@ -92,11 +95,15 @@ public:
     QRect getBoundingRect(track t);
     QRect getBoundingRect(pad p);
 
-    //Be consit:5-100000-100!!
-    //or 6-1000000-1000
+    /*
+     * Be consistent,use either of these settings!
+     * 5-100000-100
+     * 6-1000000-1000
+     * */
     int precision=6;
     int precisionScale=1000000;
     int precisionError=1000;
+
     //modiy these varaibles at the same time:
     //toolpath.h--toolDiameter
     //preprocess.cpp&toolpath.cpp--bondingRecIntersect()
@@ -118,11 +125,6 @@ private:
     #define SHAPE_E 5
     #define SHAPE_M 6
 
-    bool process_line(QByteArray line);
-    bool transform_data();
-    qint64 convertNumber(QString line, QString c, qint32 integerDigit, qint32 decimalDigit);
-    void initParameters();
-
     char FormatStatement;//L(Leading) T(Trailing) D
     char CoordinateMode;//A(Absolute) I(Incremental)
     qint32 XInteger,XDecimal;
@@ -135,6 +137,12 @@ private:
 
     QHash<QString, double> ADHash;//Aperture Definition
     QStringList DataList;
+
+
+    void initParameters();
+    bool process_line(QByteArray line);
+    bool transform_data();
+    qint64 convertNumber(QString line, QString c, qint32 integerDigit, qint32 decimalDigit);
 
     qint64 maxX,maxY,minX,minY;
     void find_border(boundingRect r);
