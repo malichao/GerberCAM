@@ -32,7 +32,7 @@ SOFTWARE.
 #include <QRect>
 #include<QtMath>
 
-#include "calculation.h"
+
 #include "clipper.hpp"
 
 
