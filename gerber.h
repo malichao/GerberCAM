@@ -39,7 +39,7 @@ SOFTWARE.
 using namespace ClipperLib;
 
 /*
- * A rectangle boder of a element,for quick collision check.
+ * A rectangle border of a element,for quick collision check.
  * */
 struct boundingRect
 {
