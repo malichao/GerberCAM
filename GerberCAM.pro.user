@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.3.0, 2016-01-30T20:20:01. -->
+<!-- Written by QtCreator 3.3.0, 2016-01-30T22:05:16. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -112,7 +112,7 @@
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges">
-     <value type="QString">HOMEPATH=C:\MalcStudio\CAM\gerberCAM\GerberCAM;C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug\;</value>
+     <value type="QString">HOMEPATH=C:\MalcStudio\CAM\gerberCAM\GerberCAM;C:\MalcStudio\CAM\gerberCAM\GerberCAM\source\;</value>
      <value type="QString">PATH=C:\Qt\5.4\mingw491_32\bin;C:\Qt\Tools\mingw491_32\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\MATLAB\R2013b\runtime\win64;C:\Program Files\MATLAB\R2013b\bin;C:\Program Files (x86)\Altium Designer Summer 09\System;C:\MinGW\bin\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Skype\Phone\;C:\Program Files\Python27;C:\Program Files (x86)\altera\15.0\modelsim_ase\win32aloem;C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug</value>
     </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Debug</value>

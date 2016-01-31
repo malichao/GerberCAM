@@ -13,35 +13,33 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    calculation.cpp \
-    clipper.cpp \
-    drawPCB.cpp \
-    gerber.cpp \
-    preprocess.cpp \
-    setting.cpp \
-    settingwindow.cpp \
-    toolpath.cpp \
-    treeitem.cpp \
-    treemodel.cpp \
-    aboutwindow.cpp
+    source/aboutwindow.cpp \
+    source/calculation.cpp \
+    source/clipper.cpp \
+    source/drawPCB.cpp \
+    source/gerber.cpp \
+    source/mainwindow.cpp \
+    source/preprocess.cpp \
+    source/setting.cpp \
+    source/settingwindow.cpp \
+    source/toolpath.cpp \
+    source/treeitem.cpp \
+    source/treemodel.cpp \
 
-HEADERS  += mainwindow.h \
-    calculation.h \
-    drawPCB.h \
-    gerber.h \
-    preprocess.h \
-    Read me.h \
-    setting.h \
-    settingwindow.h \
-    toolpath.h \
-    treeitem.h \
-    treemodel.h \
-    clipper.hpp \
-    debug/ui_about.h \
-    debug/ui_mainwindow.h \
-    debug/ui_settingwindow.h \
-    aboutwindow.h
+
+HEADERS  +=source/aboutwindow.h \
+    source/calculation.h \
+    source/drawPCB.h \
+    source/gerber.h \
+    source/mainwindow.h \
+    source/preprocess.h \
+    source/Read me.h \
+    source/setting.h \
+    source/settingwindow.h \
+    source/toolpath.h \
+    source/treeitem.h \
+    source/treemodel.h \
+    source/clipper.hpp
 
 FORMS    += mainwindow.ui \
     settingwindow.ui \
@@ -50,3 +48,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     resources.qrc
+
+INCLUDEPATH += $$PWD/source
