@@ -85,6 +85,8 @@ private slots:
 
     void on_actionSetting_triggered();
 
+    void on_actionAbout_GerberCAM_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString fileName;

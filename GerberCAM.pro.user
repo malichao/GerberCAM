@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.3.0, 2016-01-26T00:40:00. -->
+<!-- Written by QtCreator 3.3.0, 2016-01-30T20:20:01. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -111,7 +111,10 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
-    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges">
+     <value type="QString">HOMEPATH=C:\MalcStudio\CAM\gerberCAM\GerberCAM;C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug\;</value>
+     <value type="QString">PATH=C:\Qt\5.4\mingw491_32\bin;C:\Qt\Tools\mingw491_32\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\MATLAB\R2013b\runtime\win64;C:\Program Files\MATLAB\R2013b\bin;C:\Program Files (x86)\Altium Designer Summer 09\System;C:\MinGW\bin\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Skype\Phone\;C:\Program Files\Python27;C:\Program Files (x86)\altera\15.0\modelsim_ase\win32aloem;C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug</value>
+    </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
@@ -225,10 +228,10 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Arguments"></value>
-    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable">C:/MalcStudio/CAM/gerberCAM/GerberCAM/debug/gerberCAM.exe</value>
+    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable">C:/MalcStudio/CAM/gerberCAM/GerberCAM/debug/gerberCAM1.exe</value>
     <value type="bool" key="ProjectExplorer.CustomExecutableRunConfiguration.UseTerminal">false</value>
     <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.WorkingDirectory">%{buildDir}</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug\gerberCAM.exe</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run C:\MalcStudio\CAM\gerberCAM\GerberCAM\debug\gerberCAM1.exe</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>

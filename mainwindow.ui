@@ -116,6 +116,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionAbout_GerberCAM"/>
    </widget>
    <widget class="QMenu" name="menuMachine">
     <property name="title">
@@ -203,6 +204,11 @@
   <action name="actionHole_Identify">
    <property name="text">
     <string>Hole Identify</string>
+   </property>
+  </action>
+  <action name="actionAbout_GerberCAM">
+   <property name="text">
+    <string>About GerberCAM</string>
    </property>
   </action>
  </widget>

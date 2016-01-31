@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2014-12-24T11:42:18
+# Project created by QtCreator 2016-01-30T18:52:57
 #
 #-------------------------------------------------
 
@@ -8,35 +8,45 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = gerberCAM
+TARGET = GerberCAM1
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    gerber.cpp \
-    drawPCB.cpp \
-    toolpath.cpp \
-    preprocess.cpp \
+    calculation.cpp \
     clipper.cpp \
+    drawPCB.cpp \
+    gerber.cpp \
+    preprocess.cpp \
+    setting.cpp \
+    settingwindow.cpp \
+    toolpath.cpp \
     treeitem.cpp \
     treemodel.cpp \
-    settingwindow.cpp \
-    setting.cpp
+    aboutwindow.cpp
 
 HEADERS  += mainwindow.h \
-    gerber.h \
+    calculation.h \
     drawPCB.h \
-    toolpath.h \
+    gerber.h \
     preprocess.h \
-    clipper.hpp \
+    Read me.h \
+    setting.h \
+    settingwindow.h \
+    toolpath.h \
     treeitem.h \
     treemodel.h \
-    settingwindow.h \
-    setting.h
+    clipper.hpp \
+    debug/ui_about.h \
+    debug/ui_mainwindow.h \
+    debug/ui_settingwindow.h \
+    aboutwindow.h
 
-FORMS    += settingwindow.ui \
-    mainwindow.ui
+FORMS    += mainwindow.ui \
+    settingwindow.ui \
+    aboutwindow.ui \
+    aboutwindow.ui
 
 RESOURCES += \
     resources.qrc

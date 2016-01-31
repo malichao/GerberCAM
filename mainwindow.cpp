@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "mainwindow.h"
 #include "toolpath.h"
+#include "aboutwindow.h"
 
 
 #include <QFileDialog>
@@ -553,4 +554,14 @@ void MainWindow::on_actionSetting_triggered()
     //settingwindow s;
     settingWindow.setModal(true);
     settingWindow.exec();
+}
+
+void MainWindow::on_actionAbout_GerberCAM_triggered()
+{
+    aboutwindow about;
+    about.setModal(true);
+    about.exec();
+    //about aboutwindow;
+    //aboutwindow.setModal(true);
+    //aboutwindow.exec();
 }

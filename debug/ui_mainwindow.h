@@ -41,6 +41,7 @@ public:
     QAction *actionToolpath_generat;
     QAction *actionSetting;
     QAction *actionHole_Identify;
+    QAction *actionAbout_GerberCAM;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QTabWidget *LayerTab1;
@@ -96,6 +97,8 @@ public:
         actionSetting->setObjectName(QStringLiteral("actionSetting"));
         actionHole_Identify = new QAction(MainWindow);
         actionHole_Identify->setObjectName(QStringLiteral("actionHole_Identify"));
+        actionAbout_GerberCAM = new QAction(MainWindow);
+        actionAbout_GerberCAM->setObjectName(QStringLiteral("actionAbout_GerberCAM"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -195,6 +198,7 @@ public:
         menuView->addAction(actionLayer1);
         menuView->addAction(actionLayer2);
         menuParameter->addAction(actionSetting);
+        menuHelp->addAction(actionAbout_GerberCAM);
         menuMachine->addAction(actionToolpath_generat);
         menuMachine->addAction(actionHole_Identify);
         mainToolBar->addAction(actionOpen);
@@ -226,6 +230,7 @@ public:
         actionToolpath_generat->setText(QApplication::translate("MainWindow", "Toolpath Generate", 0));
         actionSetting->setText(QApplication::translate("MainWindow", "Setting", 0));
         actionHole_Identify->setText(QApplication::translate("MainWindow", "Hole Identify", 0));
+        actionAbout_GerberCAM->setText(QApplication::translate("MainWindow", "About GerberCAM", 0));
         LayerTab1->setTabText(LayerTab1->indexOf(tabMessage), QApplication::translate("MainWindow", "Message", 0));
         LayerTab1->setTabText(LayerTab1->indexOf(tabLayer1), QApplication::translate("MainWindow", "Layer1", 0));
         LayerTab1->setTabText(LayerTab1->indexOf(tabLayer2), QApplication::translate("MainWindow", "Tab 2", 0));
