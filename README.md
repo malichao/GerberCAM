@@ -39,3 +39,4 @@ GerberCAM is still a prototype.After three months of heavy development and testi
 However,since I don’t have a CNC machine to test the software anymore so I didn’t continue to work on this project.I’ve been using hundreds of gerber files and thousands of times to test all current functions.There are still a lot of testing and verification work to do in the future.If anyone is interested in this project,feel free to fork it.Also I’ve been writing a detailed document about the implementation of GerberCAM on my blog.There are several opensource CAM software projects out there and I hope my works could contribute any help.  
 
 Here’s the [link](http://lichaoma.com/2015/11/14/gerbercam-a-pcb-tool-path-generator/) to the document.
+
